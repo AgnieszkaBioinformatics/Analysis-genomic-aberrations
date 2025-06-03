@@ -1,3 +1,5 @@
+% note: comments start with '%'
+
 % sorting the bam files (control and tumor)
 
 samtools sort Control.bam > Control.sorted.bam
@@ -18,5 +20,16 @@ samtools view -c Tumor.sorted.bam
 % count reads that map to reverse strand - the `-f 16` allows me to use the bitwise FLAG to filter the bam file
 
 samtools view -c -f 16 Control.sorted.bam
-
+% out: 9855853
 samtools view -c -f 16 Tumor.sorted.bam
+% out: 7518303
+
+% General statistics
+
+samtools stats Control.sorted.bam > Control.sorted.stats
+samtools stats Tumor.sorted.bam > Tumor.sorted.stats
+
+% view statistics
+
+less Control.sorted.stats
+less Tumor.sorted.stats
