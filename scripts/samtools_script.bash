@@ -33,3 +33,8 @@ samtools stats Tumor.sorted.bam > Tumor.sorted.stats
 
 less Control.sorted.stats
 less Tumor.sorted.stats
+
+% mpileup comparing the control with the reference fasta file 
+
+samtools mpileup -q 30 -Q 20 -B -f ../data/annotations/human_g1k_v37.fasta Control.sorted.bam 
+% maybe wait for vai to interprete the output
