@@ -18,3 +18,4 @@ gatk3 -T BaseRecalibrator -R ../../Annotations/human_g1k_v37.fasta -I Tumor.sort
 gatk3 -T PrintReads -R ../../Annotations/human_g1k_v37.fasta -I Tumor.sorted.realigned.bam -BQSR recal.table -o Tumor.sorted.realigned.recalibrated.bam -L ../Captured_Regions.bed --emit_original_quals
 gatk3 -T BaseRecalibrator -R ../../Annotations/human_g1k_v37.fasta -I Tumor.sorted.realigned.recalibrated.bam -knownSites ../../Annotations/hapmap_3.3.b37.vcf -BQSR recal.table -o after_recal.table -L ../Captured_Regions.bed
 gatk3 -T AnalyzeCovariates -R ../../Annotations/human_g1k_v37.fasta -before recal.table -after after_recal.table -csv recal.csv -plots Control_recal.pdf
+
