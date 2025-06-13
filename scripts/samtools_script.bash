@@ -1,4 +1,4 @@
-% note: comments start with '%'
+% note: comments lines start with '%'
 
 % sorting the bam files (control and tumor)
 
