@@ -1,20 +1,18 @@
 # Annotating the variants with snpEff and snpSift on the control sample
-snpEff -Xmx4g -v hg19kg Control.GATK.recode.vcf -s Control.GATK.recode.ann.html > Control.GATK.recode.ann.vcf
-snpsift annotate ../../Annotations/hapmap_3.3.b37.vcf Control.GATK.recode.ann.vcf > Control.GATK.recode.ann2.vcf
-snpsift annotate ../../Annotations/clinvar_Pathogenic.vcf Control.GATK.recode.ann2.vcf > Control.GATK.recode.ann3.vcf
+
+# creating a vcf file 
+snpEff -v hg19kg ./out_variant_calling/Control.GATK.recode.vcf -s ./out_variant_annotation/Control.GATK.recode.ann.html > ./out_variant_annotation/control.gatk.recode.ann.vcf
+
+snpSift Annotate ./data/annotations/hapmap_3.3.b37.vcf ./out_variant_annotation/control.gatk.recode.ann.vcf > ./out_variant_annotation/control.gatk.recode.ann2.vcf
+
+snpSift Annotate ./data/annotations/clinvar_Pathogenic.vcf ./out_variant_annotation/control.gatk.recode.ann2.vcf > ./out_variant_annotation/control.gatk.recode.ann3.vcf
 
 # Annotating the variants with snpEff and snpSift on the tumor sample
-snpEff -Xmx4g -v hg19kg Tumor.GATK.recode.vcf -s Tumor.GATK.recode.ann.html > Tumor.GATK.recode.ann.vcf
-snpsift annotate ../../Annotations/hapmap_3.3.b37.vcf Tumor.GATK.recode.ann.vcf > Tumor.GATK.recode.ann2.vcf
-snpsift annotate ../../Annotations/clinvar_Pathogenic.vcf Tumor.GATK.recode.ann2.vcf > Tumor.GATK.recode.ann3.vcf
+snpEff -v hg19kg ./out_variant_calling/Tumor.GATK.recode.vcf -s ./out_variant_annotation/Tumor.GATK.recode.ann.html > ./out_variant_annotation/Tumor.GATK.recode.ann.vcf
 
-# Filtering the annotated variants for high impact and depth of coverage
-cat Control.GATK.recode.ann3.vcf | snpsift filter "(ANN[ANY].IMPACT = 'HIGH') & (DP > 20) & (exists ID)"
-cat Tumor.GATK.recode.ann3.vcf | snpsift filter "(ANN[ANY].IMPACT = 'HIGH') & (DP > 20) & (exists ID)"
+snpSift Annotate ./data/annotations/hapmap_3.3.b37.vcf ./out_variant_annotation/Tumor.GATK.recode.ann.vcf > ./out_variant_annotation/Tumor.GATK.recode.ann2.vcf
 
-# taking only heterozygous snps
-grep -E "(^#|0/1)" Control.GATK.vcf > Control.het.vcf
-grep -E "(^#|0/1)" Tumor.GATK.vcf > Tumor.het.vcf
+snpSift Annotate ./data/annotations/clinvar_Pathogenic.vcf ./out_variant_annotation/Tumor.GATK.recode.ann2.vcf > ./out_variant_annotation/Tumor.GATK.recode.ann3.vcf
 
 # Filtering the annotated variants for high impact and depth of coverage
 cat ./out_variant_annotation/Control.GATK.recode.ann3.vcf | snpSift filter "(ANN[ANY].IMPACT = 'HIGH') & (DP > 20) & (exists ID)"
