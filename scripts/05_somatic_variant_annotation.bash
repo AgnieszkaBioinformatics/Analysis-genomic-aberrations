@@ -15,3 +15,17 @@ cat Tumor.GATK.recode.ann3.vcf | snpsift filter "(ANN[ANY].IMPACT = 'HIGH') & (D
 # taking only heterozygous snps
 grep -E "(^#|0/1)" Control.GATK.vcf > Control.het.vcf
 grep -E "(^#|0/1)" Tumor.GATK.vcf > Tumor.het.vcf
+
+# Filtering the annotated variants for high impact and depth of coverage
+cat ./out_variant_annotation/Control.GATK.recode.ann3.vcf | snpSift filter "(ANN[ANY].IMPACT = 'HIGH') & (DP > 20) & (exists ID)"
+cat ./out_variant_annotation/Tumor.GATK.recode.ann3.vcf | snpSift filter "(ANN[ANY].IMPACT = 'HIGH') & (DP > 20) & (exists ID)"
+
+# Taking only the heterozygous SNPs 
+grep -E "(^#|0/1)" ./out_variant_calling/Control.GATK.recode.vcf > ./out_variant_calling/Control.het.vcf
+grep -E "(^#|0/1)" ./out_variant_calling/Tumor.GATK.recode.vcf > ./out_variant_calling/Tumor.het.vcf
+
+# filter for high confidence somatic events
+cat ./out_variant_annotation/Tumor.GATK.recode.ann3.vcf | snpSift filter "(ANN[ANY].IMPACT = 'HIGH') & (DP > 20) & (exists ID)" > ./out_variant_annotation/Tumor.somatic.highimpact.vcf
+
+# extract relevant information to create a table
+bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t[%ANN]\t%ID\t%DP\n' ./out_variant_annotation/Tumor.somatic.highimpact.vcf > somatic_events_table.tsv
