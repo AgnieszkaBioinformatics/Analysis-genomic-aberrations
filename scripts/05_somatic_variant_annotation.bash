@@ -1,6 +1,4 @@
 # Annotating the variants with snpEff and snpSift on the control sample
-
-# creating a vcf file 
 snpEff -v hg19kg ./out_variant_calling/Control.GATK.recode.vcf -s ./out_variant_annotation/Control.GATK.recode.ann.html > ./out_variant_annotation/control.gatk.recode.ann.vcf
 
 snpSift Annotate ./data/annotations/hapmap_3.3.b37.vcf ./out_variant_annotation/control.gatk.recode.ann.vcf > ./out_variant_annotation/control.gatk.recode.ann2.vcf
